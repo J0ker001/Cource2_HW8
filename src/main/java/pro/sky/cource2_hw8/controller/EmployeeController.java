@@ -6,20 +6,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.cource2_hw8.service.Employee;
 import pro.sky.cource2_hw8.service.EmployeeID;
+import pro.sky.cource2_hw8.service.EmployeeQuery;
 import pro.sky.cource2_hw8.service.EmployeeService;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
 
     public final EmployeeService employeeService;
+    public final EmployeeQuery employeeQuery;
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
+        this.employeeQuery = new EmployeeQuery(this.employeeService);
     }
 
     @GetMapping("/welcome")
@@ -38,15 +42,15 @@ public class EmployeeController {
 
 
     @GetMapping("/find")
-    public String findEmployee(@RequestParam("fistName")String fistName,@RequestParam("lastName") String lastName) {
+    public String findEmployee(@RequestParam("fistName") String fistName, @RequestParam("lastName") String lastName) {
         EmployeeID employeeID = new EmployeeID(fistName, lastName);
         Employee employee = employeeService.findEmployee(employeeID);
         return "Сотрудник: " + employeeID + " найден!";
     }
 
     @GetMapping("/add")
-    public String addEmployee(@RequestParam("fistName")String fistName,@RequestParam("lastName") String lastName,
-                              @RequestParam("salary")double salary,@RequestParam("department") int department) {
+    public String addEmployee(@RequestParam("fistName") String fistName, @RequestParam("lastName") String lastName,
+                              @RequestParam("salary") double salary, @RequestParam("department") int department) {
 
         EmployeeID newemployeeID = new EmployeeID(fistName, lastName);
         Employee newemployee = new Employee(salary, department);
@@ -62,6 +66,29 @@ public class EmployeeController {
         });
         return result;
     }
+
+    @GetMapping("/departments/max-salary")
+    public String maxSalaryEmployee(int department) {
+        return employeeQuery.maxSalaryEmployee(department).toString();
+    }
+
+    @GetMapping("/departments/mix-salary")
+    public String mixSalaryEmployee(int department) {
+        return employeeQuery.minSalaryEmployee(department).toString();
+    }
+
+    @GetMapping("/departments/allDepartment")
+    public List printEmployeeDepartment(int department) {
+        return employeeQuery.printEmployeeDepartment(department);
+    }
+
+
+    @GetMapping("/departments/all")
+    public Map<Integer, List<Map.Entry<EmployeeID, Employee>>> printEmployeeAll() {
+        return employeeQuery.printEmployeeAll();
+    }
+
+
 }
 
 

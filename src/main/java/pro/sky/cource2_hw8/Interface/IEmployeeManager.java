@@ -1,4 +1,8 @@
-package pro.sky.cource2_hw8.service;
+package pro.sky.cource2_hw8.Interface;
+
+import pro.sky.cource2_hw8.service.Employee;
+import pro.sky.cource2_hw8.service.EmployeeID;
+
 import java.util.Map;
 
 public interface IEmployeeManager {
@@ -10,4 +14,6 @@ public interface IEmployeeManager {
     Employee findEmployee(EmployeeID employeeID);
 
     Map<EmployeeID, Employee> getEmployees();
+
+
 }

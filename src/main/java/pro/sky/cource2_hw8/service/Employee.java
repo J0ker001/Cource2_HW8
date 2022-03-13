@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Employee {
 
     private double salary;
-    private int department;
+    private Integer department;
 
     public Employee(double salary, int department) {
         this.salary = salary;
@@ -43,7 +43,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return  "Зарпалата: " + salary +
+        return "Зарпалата: " + salary +
                 ", Отдел: " + department;
     }
 }

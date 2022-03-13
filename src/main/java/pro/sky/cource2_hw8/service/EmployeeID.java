@@ -36,6 +36,6 @@ public class EmployeeID {
     @Override
     public String toString() {
         return
-                 fistName + " " +  lastName + " ";
+                fistName + " " + lastName + " ";
     }
 }
