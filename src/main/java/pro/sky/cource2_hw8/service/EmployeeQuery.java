@@ -31,8 +31,8 @@ public class EmployeeQuery implements pro.sky.cource2_hw8.Interface.EmployeeQuer
                 .getKey();
     }
 
-    public Employee test (EmployeeID employeeID ){
-       return iEmployeeManager.findEmployee(employeeID);
+    public Employee test(EmployeeID employeeID) {
+        return iEmployeeManager.findEmployee(employeeID);
     }
 
     @Override
