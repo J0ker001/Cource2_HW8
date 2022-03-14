@@ -1,4 +1,4 @@
-package pro.sky.cource2_hw8.service;
+package pro.sky.cource2_hw8.employeeClass;
 
 import java.util.Objects;
 

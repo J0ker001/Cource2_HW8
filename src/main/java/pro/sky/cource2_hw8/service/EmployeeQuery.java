@@ -3,25 +3,23 @@ package pro.sky.cource2_hw8.service;
 
 import org.springframework.stereotype.Service;
 import pro.sky.cource2_hw8.Exception.NotFoundException;
-import pro.sky.cource2_hw8.Interface.IEmployeeManager;
-import pro.sky.cource2_hw8.Interface.IEmployeeQuery;
+import pro.sky.cource2_hw8.Interface.EmployeeManager;
+import pro.sky.cource2_hw8.employeeClass.Employee;
+import pro.sky.cource2_hw8.employeeClass.EmployeeID;
 
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class EmployeeQuery implements IEmployeeQuery {
-    private IEmployeeManager iEmployeeManager;
+public class EmployeeQuery implements pro.sky.cource2_hw8.Interface.EmployeeQuery {
+    private EmployeeManager iEmployeeManager;
 
 
-    public EmployeeQuery(IEmployeeManager iEmployeeManager) {
+    public EmployeeQuery(EmployeeManager iEmployeeManager) {
         this.iEmployeeManager = iEmployeeManager;
     }
 
-    public IEmployeeManager getiEmployeeManager() {
-        return iEmployeeManager;
-    }
 
     @Override
     public EmployeeID maxSalaryEmployee(int department) {
@@ -31,6 +29,10 @@ public class EmployeeQuery implements IEmployeeQuery {
                 .max(Comparator.comparing(employeeIDEmployeeEntry -> employeeIDEmployeeEntry.getValue().getSalary()))
                 .orElseThrow(() -> new NotFoundException("Сотрудник не найден"))
                 .getKey();
+    }
+
+    public Employee test (EmployeeID employeeID ){
+       return iEmployeeManager.findEmployee(employeeID);
     }
 
     @Override

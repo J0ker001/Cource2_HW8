@@ -4,10 +4,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pro.sky.cource2_hw8.service.Employee;
-import pro.sky.cource2_hw8.service.EmployeeID;
+import pro.sky.cource2_hw8.employeeClass.Employee;
+import pro.sky.cource2_hw8.employeeClass.EmployeeID;
 import pro.sky.cource2_hw8.service.EmployeeQuery;
-import pro.sky.cource2_hw8.service.EmployeeService;
+import pro.sky.cource2_hw8.service.EmployeeManager;
 
 
 import java.util.ArrayList;
@@ -18,12 +18,12 @@ import java.util.Map;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    public final EmployeeService employeeService;
+    public final EmployeeManager employeeManager;
     public final EmployeeQuery employeeQuery;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-        this.employeeQuery = new EmployeeQuery(this.employeeService);
+    public EmployeeController(EmployeeManager employeeManager) {
+        this.employeeManager = employeeManager;
+        this.employeeQuery = new EmployeeQuery(this.employeeManager);
     }
 
     @GetMapping("/welcome")
@@ -36,7 +36,7 @@ public class EmployeeController {
     @GetMapping("/remove")
     public String removeEmployee(@RequestParam("fistName") String fistName, @RequestParam("lastName") String lastName) {
         EmployeeID employeeID = new EmployeeID(fistName, lastName);
-        employeeService.removeEmployee(employeeID);
+        employeeManager.removeEmployee(employeeID);
         return "Сотрудник: " + fistName + " " + lastName + " найден и удален!";
     }
 
@@ -44,7 +44,7 @@ public class EmployeeController {
     @GetMapping("/find")
     public String findEmployee(@RequestParam("fistName") String fistName, @RequestParam("lastName") String lastName) {
         EmployeeID employeeID = new EmployeeID(fistName, lastName);
-        Employee employee = employeeService.findEmployee(employeeID);
+        Employee employee = employeeManager.findEmployee(employeeID);
         return "Сотрудник: " + employeeID + " найден!";
     }
 
@@ -54,14 +54,14 @@ public class EmployeeController {
 
         EmployeeID newemployeeID = new EmployeeID(fistName, lastName);
         Employee newemployee = new Employee(salary, department);
-        employeeService.addEmployee(newemployeeID, newemployee);
+        employeeManager.addEmployee(newemployeeID, newemployee);
         return "Сотрудник: " + newemployeeID + "добавлен книгу учета";
     }
 
     @GetMapping("/getEmployee")
     public List<String> printList() {
         List<String> result = new ArrayList<String>();
-        employeeService.getEmployees().forEach((employeeID, employee) -> {
+        employeeManager.getEmployees().forEach((employeeID, employee) -> {
             result.add(employeeID.toString() + " " + employee.toString());
         });
         return result;
