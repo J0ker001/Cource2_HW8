@@ -1,13 +1,15 @@
 package pro.sky.cource2_hw8.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pro.sky.cource2_hw8.Exception.BadRequestException;
 import pro.sky.cource2_hw8.employeeClass.Employee;
 import pro.sky.cource2_hw8.employeeClass.EmployeeID;
 import pro.sky.cource2_hw8.service.EmployeeQuery;
-import pro.sky.cource2_hw8.service.EmployeeManager;
+import pro.sky.cource2_hw8.service.MapStorageEmployeeManager;
 
 
 import java.util.ArrayList;
@@ -18,10 +20,10 @@ import java.util.Map;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    public final EmployeeManager employeeManager;
+    public final MapStorageEmployeeManager employeeManager;
     public final EmployeeQuery employeeQuery;
 
-    public EmployeeController(EmployeeManager employeeManager) {
+    public EmployeeController(MapStorageEmployeeManager employeeManager) {
         this.employeeManager = employeeManager;
         this.employeeQuery = new EmployeeQuery(this.employeeManager);
     }
@@ -35,7 +37,10 @@ public class EmployeeController {
 
     @GetMapping("/remove")
     public String removeEmployee(@RequestParam("fistName") String fistName, @RequestParam("lastName") String lastName) {
-        EmployeeID employeeID = new EmployeeID(fistName, lastName);
+        if (!(StringUtils.isAlpha(lastName) && StringUtils.isAlpha(fistName))) {
+            throw new BadRequestException();
+        }
+        EmployeeID employeeID = new EmployeeID(StringUtils.capitalize(fistName), StringUtils.capitalize(lastName));
         employeeManager.removeEmployee(employeeID);
         return "Сотрудник: " + fistName + " " + lastName + " найден и удален!";
     }
@@ -43,7 +48,10 @@ public class EmployeeController {
 
     @GetMapping("/find")
     public String findEmployee(@RequestParam("fistName") String fistName, @RequestParam("lastName") String lastName) {
-        EmployeeID employeeID = new EmployeeID(fistName, lastName);
+        if (!(StringUtils.isAlpha(lastName) && StringUtils.isAlpha(fistName))) {
+            throw new BadRequestException();
+        }
+        EmployeeID employeeID = new EmployeeID(StringUtils.capitalize(fistName), StringUtils.capitalize(lastName));
         Employee employee = employeeManager.findEmployee(employeeID);
         return "Сотрудник: " + employeeID + " найден!";
     }
@@ -51,8 +59,10 @@ public class EmployeeController {
     @GetMapping("/add")
     public String addEmployee(@RequestParam("fistName") String fistName, @RequestParam("lastName") String lastName,
                               @RequestParam("salary") double salary, @RequestParam("department") int department) {
-
-        EmployeeID newemployeeID = new EmployeeID(fistName, lastName);
+        if (!(StringUtils.isAlpha(lastName) && StringUtils.isAlpha(fistName))) {
+            throw new BadRequestException();
+        }
+        EmployeeID newemployeeID = new EmployeeID(StringUtils.capitalize(fistName), StringUtils.capitalize(lastName));
         Employee newemployee = new Employee(salary, department);
         employeeManager.addEmployee(newemployeeID, newemployee);
         return "Сотрудник: " + newemployeeID + "добавлен книгу учета";
@@ -87,8 +97,6 @@ public class EmployeeController {
     public Map<Integer, List<Map.Entry<EmployeeID, Employee>>> printEmployeeAll() {
         return employeeQuery.printEmployeeAll();
     }
-
-
 }
 
 

@@ -1,5 +1,6 @@
 package pro.sky.cource2_hw8.service;
 
+
 import org.springframework.stereotype.Service;
 import pro.sky.cource2_hw8.Exception.BadRequestException;
 import pro.sky.cource2_hw8.Exception.NotFoundException;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class EmployeeManager implements pro.sky.cource2_hw8.Interface.EmployeeManager {
+public class MapStorageEmployeeManager implements pro.sky.cource2_hw8.Interface.EmployeeManager {
 
     private HashMap<EmployeeID, Employee> employeeMap = new HashMap<>(Map.of(
             new EmployeeID("Иван", "Сухин"), new Employee(120000, 1),
@@ -42,7 +43,6 @@ public class EmployeeManager implements pro.sky.cource2_hw8.Interface.EmployeeMa
 
     @Override
     public void removeEmployee(EmployeeID employeeID) {
-
         if (!employeeMap.containsKey(employeeID)) {
             throw new NotFoundException();
         }
