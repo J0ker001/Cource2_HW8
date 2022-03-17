@@ -1,9 +1,11 @@
 package pro.sky.cource2_hw8.service;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.cource2_hw8.Exception.BadRequestException;
 import pro.sky.cource2_hw8.Exception.NotFoundException;
+import pro.sky.cource2_hw8.Interface.EmployeeManager;
 import pro.sky.cource2_hw8.employeeClass.Employee;
 import pro.sky.cource2_hw8.employeeClass.EmployeeID;
 
@@ -11,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class MapStorageEmployeeManager implements pro.sky.cource2_hw8.Interface.EmployeeManager {
+public class MapStorageEmployeeManager implements EmployeeManager {
 
     private HashMap<EmployeeID, Employee> employeeMap = new HashMap<>(Map.of(
             new EmployeeID("Иван", "Сухин"), new Employee(120000, 1),
@@ -26,15 +28,19 @@ public class MapStorageEmployeeManager implements pro.sky.cource2_hw8.Interface.
             new EmployeeID("Андрей", "Петров"), new Employee(21375, 2)
     ));
 
-    @Override
-    public String toString() {
-        return "EmployeeService{" +
-                "employeeMap=" + employeeMap +
-                '}';
+    public EmployeeID сheckingAndCreatingEmployeeID(String fistName, String lastName) {
+        if (!(StringUtils.isAlpha(lastName) && StringUtils.isAlpha(fistName))) {
+            throw new BadRequestException();
+        }
+        EmployeeID employeeID = new EmployeeID(fistName, lastName);
+        return employeeID;
     }
 
     @Override
     public void addEmployee(EmployeeID employeeID, Employee employee) {
+        if (!(StringUtils.isAlpha(employeeID.getFistName()) && StringUtils.isAlpha(employeeID.getLastName()))) {
+            throw new BadRequestException();
+        }
         if (employeeMap.containsKey(employeeID)) {
             throw new BadRequestException();
         }

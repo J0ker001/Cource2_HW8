@@ -1,5 +1,7 @@
 package pro.sky.cource2_hw8.employeeClass;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
 
 public class EmployeeID {
@@ -8,8 +10,8 @@ public class EmployeeID {
     private final String lastName;
 
     public EmployeeID(String fistName, String lastName) {
-        this.fistName = fistName;
-        this.lastName = lastName;
+        this.fistName = StringUtils.capitalize(fistName);
+        this.lastName = StringUtils.capitalize(lastName);
     }
 
     public String getFistName() {
@@ -34,8 +36,5 @@ public class EmployeeID {
     }
 
     @Override
-    public String toString() {
-        return
-                fistName + " " + lastName + " ";
-    }
+    public String toString() { return fistName + " " + lastName + " ";}
 }
