@@ -1,7 +1,6 @@
 package pro.sky.cource2_hw8.employeeClass;
 
 import org.apache.commons.lang3.StringUtils;
-
 import java.util.Objects;
 
 public class EmployeeID {

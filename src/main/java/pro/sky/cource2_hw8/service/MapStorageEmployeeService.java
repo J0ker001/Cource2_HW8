@@ -3,9 +3,10 @@ package pro.sky.cource2_hw8.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import pro.sky.cource2_hw8.Exception.AlreadyAddedException;
 import pro.sky.cource2_hw8.Exception.BadRequestException;
 import pro.sky.cource2_hw8.Exception.NotFoundException;
-import pro.sky.cource2_hw8.Interface.EmployeeManager;
+import pro.sky.cource2_hw8.Interface.EmployeeService;
 import pro.sky.cource2_hw8.employeeClass.Employee;
 import pro.sky.cource2_hw8.employeeClass.EmployeeID;
 
@@ -13,21 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class MapStorageEmployeeManager implements EmployeeManager {
+public class MapStorageEmployeeService implements EmployeeService {
 
-    private HashMap<EmployeeID, Employee> employeeMap = new HashMap<>(Map.of(
-            new EmployeeID("Иван", "Сухин"), new Employee(120000, 1),
-            new EmployeeID("Семен", "Семенов"), new Employee(90000, 5),
-            new EmployeeID("Виктор", "Замков"), new Employee(170000, 1),
-            new EmployeeID("Сергей", "Матвеев"), new Employee(15000, 1),
-            new EmployeeID("Маргарита", "Степакова"), new Employee(21000, 5),
-            new EmployeeID("Игнат", "Федотов"), new Employee(173000, 4),
-            new EmployeeID("Марина", "Жукова"), new Employee(269000, 2),
-            new EmployeeID("Станислав", "Сумкин"), new Employee(56000, 4),
-            new EmployeeID("Светлана", "Сумка"), new Employee(103947, 1),
-            new EmployeeID("Андрей", "Петров"), new Employee(21375, 2)
-    ));
+    private HashMap<EmployeeID, Employee> employeeMap = new HashMap<>();
 
+    @Override
     public EmployeeID сheckingAndCreatingEmployeeID(String fistName, String lastName) {
         if (!(StringUtils.isAlpha(lastName) && StringUtils.isAlpha(fistName))) {
             throw new BadRequestException();
@@ -42,7 +33,7 @@ public class MapStorageEmployeeManager implements EmployeeManager {
             throw new BadRequestException();
         }
         if (employeeMap.containsKey(employeeID)) {
-            throw new BadRequestException();
+            throw new AlreadyAddedException();
         }
         employeeMap.put(employeeID, employee);
     }
@@ -62,6 +53,7 @@ public class MapStorageEmployeeManager implements EmployeeManager {
             throw new NotFoundException();
         }
         return employeeMap.get(employeeID);
+
     }
 
     @Override
